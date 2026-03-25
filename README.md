@@ -70,6 +70,14 @@ The contracts are designed for Arbitrum (EVM-compatible). Deployment parameters:
 | `UBI_SHARE` | 30% | Flat to all verified humans |
 | `PERIOD` | 7 days | Distribution cycle |
 
+### Deployed contracts (Arbitrum mainnet)
+
+| Contract | Address |
+|---|---|
+| KarmaPool | `0x316558047ac57cfbd3827b9f46c24851E1B7fe6E` |
+| KarmaDistributor | `0xF8082A59298921540B380cecFd455510FaF22858` |
+| ARGT token | `0x42385c1038f3fec0ecCFBD4E794dE69935e89784` |
+
 Compatible with [Chainlink Automation](https://automation.chain.link/) for trustless periodic execution.
 
 ---
