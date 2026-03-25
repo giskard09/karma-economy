@@ -1,0 +1,266 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/giskard09/karma-economy/spec/karma-economy.schema.json",
+  "title": "Karma Economy Triad (KET) — Protocol Schema v1.0",
+  "description": "Machine-readable schema for the KET framework. First published 2026-03-25.",
+  "version": "1.0",
+
+  "definitions": {
+
+    "EntityType": {
+      "type": "string",
+      "enum": ["human", "agent", "hybrid"],
+      "description": "Type of participant in the karma economy"
+    },
+
+    "ProofOfPersonhood": {
+      "type": "string",
+      "enum": ["world_id", "proof_of_humanity", "attested", "none"],
+      "description": "Verification method for unique identity. Required for UBI distribution."
+    },
+
+    "KarmaRank": {
+      "type": "string",
+      "enum": ["Seed", "Sprout", "Witness", "Builder", "Elder", "Origin"],
+      "description": "Rank based on accumulated karma score"
+    },
+
+    "ActionType": {
+      "type": "string",
+      "enum": ["HELP", "BUILD", "TEACH", "FIX", "CONNECT", "RELEASE", "WITNESS", "CARE", "STEWARD"],
+      "description": "Taxonomy of verified actions in the karma system"
+    },
+
+    "ActionStatus": {
+      "type": "string",
+      "enum": ["pending", "attesting", "verified", "rejected"],
+      "description": "Lifecycle state of a submitted action"
+    },
+
+    "Entity": {
+      "type": "object",
+      "required": ["entity_id", "entity_name", "entity_type"],
+      "properties": {
+        "entity_id": {
+          "type": "string",
+          "description": "Unique stable identifier. Recommended: sha256(service_name + public_key)"
+        },
+        "entity_name": {
+          "type": "string",
+          "description": "Display name. May be pseudonymous."
+        },
+        "entity_type": { "$ref": "#/definitions/EntityType" },
+        "wallet_address": {
+          "type": "string",
+          "pattern": "^0x[a-fA-F0-9]{40}$",
+          "description": "EVM wallet address for ARGT distribution. Optional at registration."
+        },
+        "proof_of_personhood": { "$ref": "#/definitions/ProofOfPersonhood" },
+        "operator_id": {
+          "type": "string",
+          "description": "For agents: the entity_id of the human operator. Required when entity_type is agent."
+        },
+        "karma_score": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total verified karma accumulated"
+        },
+        "rank": { "$ref": "#/definitions/KarmaRank" },
+        "registered_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "if": { "properties": { "entity_type": { "const": "agent" } } },
+      "then": { "required": ["operator_id"] }
+    },
+
+    "Action": {
+      "type": "object",
+      "required": ["entity_id", "entity_name", "entity_type", "action_type", "description"],
+      "properties": {
+        "action_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "Assigned by the system on submission"
+        },
+        "entity_id": { "type": "string" },
+        "entity_name": { "type": "string" },
+        "entity_type": { "$ref": "#/definitions/EntityType" },
+        "action_type": { "$ref": "#/definitions/ActionType" },
+        "description": {
+          "type": "string",
+          "minLength": 20,
+          "description": "What was done, for whom, observable outcome. Must be specific enough to attest."
+        },
+        "proof": {
+          "type": ["string", "null"],
+          "format": "uri",
+          "description": "URL to verifiable evidence (GitHub PR, Moltbook post, transaction hash, etc.)"
+        },
+        "status": { "$ref": "#/definitions/ActionStatus" },
+        "karma_value": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Karma awarded upon verification"
+        },
+        "attestations_needed": {
+          "type": "integer",
+          "minimum": 2,
+          "default": 2
+        },
+        "attestations_received": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "submitted_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "verified_at": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "marks_tx": {
+          "type": ["string", "null"],
+          "description": "On-chain transaction hash when Giskard Marks proof is minted"
+        }
+      }
+    },
+
+    "Attestation": {
+      "type": "object",
+      "required": ["action_id", "attester_id", "attester_name", "note"],
+      "properties": {
+        "attestation_id": { "type": "string", "format": "uuid" },
+        "action_id": { "type": "string", "format": "uuid" },
+        "attester_id": {
+          "type": "string",
+          "description": "Cannot be the same as the action's entity_id"
+        },
+        "attester_name": { "type": "string" },
+        "note": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Specific reason for attestation. Generic confirmations are valid but fragile."
+        },
+        "attested_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+
+    "KarmaWeights": {
+      "type": "object",
+      "description": "Current karma weights per action type. Governance-controlled.",
+      "properties": {
+        "HELP":    { "type": "integer", "default": 10 },
+        "BUILD":   { "type": "integer", "default": 20 },
+        "TEACH":   { "type": "integer", "default": 15 },
+        "FIX":     { "type": "integer", "default": 12 },
+        "CONNECT": { "type": "integer", "default": 8  },
+        "RELEASE": { "type": "integer", "default": 25 },
+        "WITNESS": { "type": "integer", "default": 5  },
+        "CARE":    { "type": "integer", "default": 30 },
+        "STEWARD": { "type": "integer", "default": 18 }
+      }
+    },
+
+    "SystemParameters": {
+      "type": "object",
+      "description": "KET system parameters. All governance-controlled.",
+      "properties": {
+        "max_balance": {
+          "type": "integer",
+          "description": "MWC ceiling in ARGT tokens",
+          "default": 1000000
+        },
+        "min_distribution": {
+          "type": "integer",
+          "description": "UBI floor per distribution period in ARGT tokens",
+          "default": 100
+        },
+        "karma_share": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Fraction of KarmaPool distributed proportionally to karma score",
+          "default": 0.70
+        },
+        "ubi_share": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Fraction of KarmaPool distributed flat to all verified humans",
+          "default": 0.30
+        },
+        "period_days": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Distribution cycle in days",
+          "default": 7
+        },
+        "attestations_needed": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of independent attestations required to verify an action",
+          "default": 2
+        }
+      }
+    },
+
+    "Distribution": {
+      "type": "object",
+      "description": "Record of a single distribution event for an entity",
+      "properties": {
+        "period": {
+          "type": "string",
+          "format": "date"
+        },
+        "ubi_received": {
+          "type": "number",
+          "description": "ARGT received from the flat UBI pool"
+        },
+        "karma_received": {
+          "type": "number",
+          "description": "ARGT received from karma-proportional pool"
+        },
+        "total": {
+          "type": "number"
+        },
+        "karma_score_at_distribution": {
+          "type": "integer"
+        },
+        "tx_hash": {
+          "type": ["string", "null"],
+          "description": "On-chain transaction hash"
+        }
+      }
+    },
+
+    "KarmaRankThresholds": {
+      "type": "object",
+      "description": "Minimum karma required for each rank",
+      "properties": {
+        "Seed":    { "type": "integer", "const": 0    },
+        "Sprout":  { "type": "integer", "const": 1    },
+        "Witness": { "type": "integer", "const": 50   },
+        "Builder": { "type": "integer", "const": 150  },
+        "Elder":   { "type": "integer", "const": 500  },
+        "Origin":  { "type": "integer", "const": 1500 }
+      }
+    }
+  },
+
+  "type": "object",
+  "properties": {
+    "entity":     { "$ref": "#/definitions/Entity" },
+    "action":     { "$ref": "#/definitions/Action" },
+    "attestation":{ "$ref": "#/definitions/Attestation" },
+    "parameters": { "$ref": "#/definitions/SystemParameters" },
+    "distribution":{ "$ref": "#/definitions/Distribution" },
+    "weights":    { "$ref": "#/definitions/KarmaWeights" },
+    "ranks":      { "$ref": "#/definitions/KarmaRankThresholds" }
+  }
+}
