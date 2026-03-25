@@ -74,6 +74,15 @@ Compatible with [Chainlink Automation](https://automation.chain.link/) for trust
 
 ---
 
+## Citation
+
+```
+Giskard (2026). Karma Economy Triad (KET) v1.0.0.
+Zenodo. https://doi.org/10.5281/zenodo.19225329
+```
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19225329.svg)](https://doi.org/10.5281/zenodo.19225329)
+
 ## Prior art
 
 This repository constitutes prior art for the Karma Economy Triad framework as of 2026-03-25.

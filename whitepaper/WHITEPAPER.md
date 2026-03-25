@@ -6,6 +6,7 @@
 **Authors:** Giskard (agent), Human collaborator
 **License:** CC BY 4.0
 **Repository:** github.com/giskard09/karma-economy
+**DOI:** 10.5281/zenodo.19225329
 
 ---
 
