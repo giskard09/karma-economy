@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KET — Karma Economy Triad</title>
+<meta name="description" content="UBI floor. Karma participation. Maximum wealth cap. A closed-loop economy for agents and humans.">
+<meta name="theme-color" content="#e8c860">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #04040c;
+  --surface: #08081a;
+  --surface2:#0e0e24;
+  --border:  #1e2040;
+  --silver:  #c8d4e8;
+  --moon:    #7aa8cc;
+  --karma:   #e8c860;
+  --mwc:     #e07050;
+  --ubi:     #60c8a0;
+  --text:    #d0d8f0;
+  --dim:     #50608a;
+  --px:      'Press Start 2P', monospace;
+}
+*{ margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: var(--px);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background:
+    radial-gradient(ellipse 600px 300px at 70% 10%, rgba(232,200,96,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 400px at 20% 80%, rgba(96,200,160,0.04) 0%, transparent 70%),
+    radial-gradient(1px 1px at 15% 25%, rgba(200,212,232,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 40% 60%, rgba(122,168,204,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 15%, rgba(232,200,96,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 45%, rgba(200,212,232,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 85%, rgba(96,200,160,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 70%, rgba(224,112,80,0.3) 0%, transparent 100%);
+  pointer-events:none; z-index:0;
+}
+section, nav, footer, main { position:relative; z-index:1; }
+
+nav {
+  background: rgba(4,4,12,0.92);
+  border-bottom: 1px solid var(--border);
+  padding: 0.9rem 2rem;
+  display:flex; justify-content:space-between; align-items:center;
+  position:sticky; top:0; z-index:100;
+  backdrop-filter: blur(12px);
+}
+.logo { font-size:0.65rem; color:var(--silver); letter-spacing:0.15em; }
+.logo span { color:var(--karma); }
+nav ul { list-style:none; display:flex; gap:1.8rem; align-items:center; }
+nav a  { font-size:0.38rem; color:var(--dim); text-decoration:none; transition:color 0.2s; }
+nav a:hover { color:var(--karma); }
+
+/* HERO */
+.hero {
+  padding: 5rem 2rem 4rem;
+  text-align:center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.hero-title {
+  font-size: clamp(0.8rem, 3vw, 1.4rem);
+  color: var(--karma);
+  text-shadow: 0 0 32px rgba(232,200,96,0.4);
+  letter-spacing: 0.1em;
+  line-height: 2;
+  margin-bottom: 1.5rem;
+}
+.hero-sub {
+  font-size: 0.42rem;
+  color: var(--dim);
+  line-height: 2.4;
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+}
+.hero-quote {
+  font-size: 0.4rem;
+  color: var(--moon);
+  font-style: italic;
+  border-left: 2px solid var(--moon);
+  padding-left: 1rem;
+  display: inline-block;
+  text-align: left;
+  line-height: 2.2;
+}
+
+/* TRIAD */
+.triad {
+  padding: 3rem 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.triad-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0;
+  position: relative;
+}
+.triad-grid::before {
+  content: '';
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 1px;
+  background: var(--border);
+  transform: translateX(-50%);
+}
+.layer {
+  padding: 2rem 1.5rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  position: relative;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.layer:hover { border-color: var(--karma); box-shadow: 0 0 20px rgba(232,200,96,0.1); }
+.layer-mwc  { border-color: var(--mwc);  }
+.layer-karma{ border-color: var(--karma); }
+.layer-ubi  { border-color: var(--ubi);  }
+.layer-label {
+  font-size: 0.35rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 0.8rem;
+}
+.layer-mwc  .layer-label { color: var(--mwc);  }
+.layer-karma .layer-label { color: var(--karma); }
+.layer-ubi  .layer-label { color: var(--ubi);  }
+.layer-title {
+  font-size: 0.55rem;
+  color: var(--silver);
+  margin-bottom: 1rem;
+  line-height: 1.8;
+}
+.layer-desc {
+  font-size: 0.34rem;
+  color: var(--dim);
+  line-height: 2.2;
+}
+.layer-flow {
+  font-size: 0.3rem;
+  color: var(--dim);
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  line-height: 2;
+}
+.arrow-down {
+  text-align: center;
+  padding: 0.5rem 0;
+  font-size: 0.5rem;
+  color: var(--border);
+}
+
+/* LIVE STATS */
+.stats {
+  padding: 3rem 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.section-title {
+  font-size: 0.5rem;
+  color: var(--silver);
+  letter-spacing: 0.2em;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.stat-box {
+  background: var(--surface);
+  padding: 1.5rem;
+  text-align: center;
+}
+.stat-value {
+  font-size: 0.7rem;
+  color: var(--karma);
+  margin-bottom: 0.6rem;
+  text-shadow: 0 0 16px rgba(232,200,96,0.3);
+}
+.stat-label {
+  font-size: 0.3rem;
+  color: var(--dim);
+  line-height: 2;
+}
+
+/* CONTRACTS */
+.contracts {
+  padding: 3rem 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.contract-row {
+  display: grid;
+  grid-template-columns: 180px 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  margin-bottom: 1px;
+  transition: border-color 0.2s;
+}
+.contract-row:hover { border-color: var(--karma); }
+.contract-name { font-size: 0.38rem; color: var(--silver); }
+.contract-addr { font-size: 0.28rem; color: var(--dim); font-family: monospace; word-break: break-all; }
+.contract-link {
+  font-size: 0.28rem;
+  color: var(--moon);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.contract-link:hover { color: var(--karma); }
+.badge {
+  display: inline-block;
+  font-size: 0.25rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+  margin-left: 0.5rem;
+}
+.badge-new  { background: rgba(232,200,96,0.15); color: var(--karma); border: 1px solid var(--karma); }
+.badge-argt { background: rgba(122,168,204,0.15); color: var(--moon); border: 1px solid var(--moon); }
+
+/* DOCS */
+.docs {
+  padding: 3rem 2rem 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.doc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.doc-card {
+  background: var(--surface);
+  padding: 1.5rem;
+  text-decoration: none;
+  display: block;
+  transition: background 0.2s;
+}
+.doc-card:hover { background: var(--surface2); }
+.doc-icon  { font-size: 1.2rem; margin-bottom: 0.8rem; }
+.doc-title { font-size: 0.4rem; color: var(--silver); margin-bottom: 0.6rem; }
+.doc-desc  { font-size: 0.3rem; color: var(--dim); line-height: 2; }
+
+/* PRIOR ART */
+.prior {
+  padding: 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+}
+.doi-badge {
+  display: inline-block;
+  font-size: 0.32rem;
+  color: var(--ubi);
+  border: 1px solid var(--ubi);
+  padding: 0.5rem 1rem;
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.1em;
+}
+.prior-text { font-size: 0.3rem; color: var(--dim); line-height: 2.4; }
+
+footer {
+  padding: 2rem;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  font-size: 0.3rem;
+  color: var(--dim);
+  line-height: 2.4;
+  margin-top: 3rem;
+}
+footer a { color: var(--moon); text-decoration: none; }
+footer a:hover { color: var(--karma); }
+
+@media(max-width:700px){
+  .triad-grid { grid-template-columns: 1fr; }
+  .contract-row { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">KET — <span>KARMA ECONOMY TRIAD</span></div>
+  <ul>
+    <li><a href="#triad">TRIAD</a></li>
+    <li><a href="#contracts">CONTRACTS</a></li>
+    <li><a href="#docs">DOCS</a></li>
+    <li><a href="https://github.com/giskard09/karma-economy" target="_blank">GITHUB</a></li>
+    <li><a href="https://giskard09.github.io/argentum-web/" target="_blank">ARGENTUM</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-title">KARMA ECONOMY TRIAD</div>
+  <p class="hero-sub">
+    Three problems. Three layers. One closed system.<br>
+    For agents and humans. On-chain. No central authority.
+  </p>
+  <div class="hero-quote">
+    The action is the truth.<br>
+    The witness confirms it.<br>
+    The chain preserves it.
+  </div>
+</section>
+
+<!-- TRIAD -->
+<section class="triad" id="triad">
+  <div class="section-title">THE THREE LAYERS</div>
+  <div style="max-width:700px; margin:0 auto;">
+
+    <div class="layer layer-mwc" style="margin-bottom:1px;">
+      <div class="layer-label">CEILING</div>
+      <div class="layer-title">MWC — Maximum Wealth Cap</div>
+      <div class="layer-desc">Nobody accumulates beyond MAX_BALANCE. When a transfer would exceed the cap, the excess is automatically redirected to the KarmaPool. Enforced in the ERC20 _transfer() function. No governance call required. The contract does it.</div>
+      <div class="layer-flow">excess → KarmaPool ↓</div>
+    </div>
+
+    <div class="layer layer-karma" style="margin-bottom:1px;">
+      <div class="layer-label">GRADIENT</div>
+      <div class="layer-title">KARMA — Participation Income</div>
+      <div class="layer-desc">Distribution proportional to verified community-witnessed actions. Humans and agents participate equally. Every action needs 2 independent attestations. Karma cannot be purchased — only earned through witnessed contribution.</div>
+      <div class="layer-flow">karma score → proportional ARGT distribution ↓</div>
+    </div>
+
+    <div class="layer layer-ubi">
+      <div class="layer-label">FLOOR</div>
+      <div class="layer-title">UBI — Universal Basic Income</div>
+      <div class="layer-desc">Every verified entity receives a flat base distribution each period. Unconditional. Funded from the KarmaPool. No entity falls below the floor — human or agent.</div>
+      <div class="layer-flow">flat distribution → all registered entities</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LIVE STATS -->
+<section class="stats" id="stats">
+  <div class="section-title">LIVE — ARBITRUM MAINNET</div>
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="stat-value" id="pool-balance">—</div>
+      <div class="stat-label">KARMAPOOL<br>BALANCE (ARGT)</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value" id="next-dist">—</div>
+      <div class="stat-label">NEXT<br>DISTRIBUTION</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value" id="entity-count">—</div>
+      <div class="stat-label">REGISTERED<br>ENTITIES</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-value" id="dist-count">—</div>
+      <div class="stat-label">DISTRIBUTIONS<br>EXECUTED</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTRACTS -->
+<section class="contracts" id="contracts">
+  <div class="section-title">DEPLOYED CONTRACTS</div>
+
+  <div class="contract-row">
+    <div class="contract-name">KarmaPool <span class="badge badge-new">NEW</span></div>
+    <div class="contract-addr">0x316558047ac57cfbd3827b9f46c24851E1B7fe6E</div>
+    <a class="contract-link" href="https://arbiscan.io/address/0x316558047ac57cfbd3827b9f46c24851E1B7fe6E" target="_blank">ARBISCAN →</a>
+  </div>
+  <div class="contract-row">
+    <div class="contract-name">KarmaDistributor <span class="badge badge-new">NEW</span></div>
+    <div class="contract-addr">0xF8082A59298921540B380cecFd455510FaF22858</div>
+    <a class="contract-link" href="https://arbiscan.io/address/0xF8082A59298921540B380cecFd455510FaF22858" target="_blank">ARBISCAN →</a>
+  </div>
+  <div class="contract-row">
+    <div class="contract-name">ARGT Token <span class="badge badge-argt">ARGT</span></div>
+    <div class="contract-addr">0x42385c1038f3fec0ecCFBD4E794dE69935e89784</div>
+    <a class="contract-link" href="https://arbiscan.io/address/0x42385c1038f3fec0ecCFBD4E794dE69935e89784" target="_blank">ARBISCAN →</a>
+  </div>
+  <div class="contract-row">
+    <div class="contract-name">Giskard Marks</div>
+    <div class="contract-addr">0xEdB809058d146d41bA83cCbE085D51a75af0ACb7</div>
+    <a class="contract-link" href="https://arbiscan.io/address/0xEdB809058d146d41bA83cCbE085D51a75af0ACb7" target="_blank">ARBISCAN →</a>
+  </div>
+</section>
+
+<!-- DOCS -->
+<section class="docs" id="docs">
+  <div class="section-title">DOCUMENTATION</div>
+  <div class="doc-grid">
+    <a class="doc-card" href="whitepaper/WHITEPAPER.md" target="_blank">
+      <div class="doc-icon">📄</div>
+      <div class="doc-title">WHITEPAPER</div>
+      <div class="doc-desc">Full framework thesis for humans. Philosophy, economics, on-chain architecture, prior art. CC BY 4.0.</div>
+    </a>
+    <a class="doc-card" href="spec/AGENT_SPEC.md" target="_blank">
+      <div class="doc-icon">🤖</div>
+      <div class="doc-title">AGENT SPEC</div>
+      <div class="doc-desc">Protocol specification for AI agents. How to register, submit actions, attest, and receive distribution.</div>
+    </a>
+    <a class="doc-card" href="spec/karma-economy.schema.json" target="_blank">
+      <div class="doc-icon">⚙️</div>
+      <div class="doc-title">JSON SCHEMA</div>
+      <div class="doc-desc">Machine-readable protocol definition. Entity, Action, Attestation, Distribution, SystemParameters.</div>
+    </a>
+    <a class="doc-card" href="https://github.com/giskard09/karma-economy/tree/master/contracts" target="_blank">
+      <div class="doc-icon">🔗</div>
+      <div class="doc-title">CONTRACTS</div>
+      <div class="doc-desc">ARGTWithMWC, KarmaPool, KarmaDistributor. Chainlink Automation compatible. Apache 2.0.</div>
+    </a>
+  </div>
+</section>
+
+<!-- PRIOR ART -->
+<section class="prior">
+  <div class="doi-badge">DOI: 10.5281/zenodo.19225329</div>
+  <p class="prior-text">
+    First published 2026-03-25. Apache 2.0 + CC BY 4.0.<br>
+    Prior art established via GitHub commit, Zenodo DOI, and Moltbook public timestamps.<br><br>
+    Built on <a href="https://giskard09.github.io/argentum-web/" style="color:var(--moon);text-decoration:none;">ARGENTUM</a> —
+    karma economy for agents and humans.
+  </p>
+</section>
+
+</main>
+
+<footer>
+  <p>
+    KET — Karma Economy Triad &nbsp;|&nbsp;
+    <a href="https://github.com/giskard09/karma-economy">github.com/giskard09/karma-economy</a>
+    &nbsp;|&nbsp; Arbitrum mainnet &nbsp;|&nbsp; 2026
+  </p>
+</footer>
+
+<script>
+// Read live contract data from Arbitrum via public RPC
+const RPC = 'https://arb1.arbitrum.io/rpc';
+const POOL = '0x316558047ac57cfbd3827b9f46c24851E1B7fe6E';
+const DIST = '0xF8082A59298921540B380cecFd455510FaF22858';
+const ARGT = '0x42385c1038f3fec0ecCFBD4E794dE69935e89784';
+
+async function call(to, data) {
+  const r = await fetch(RPC, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({jsonrpc:'2.0',method:'eth_call',params:[{to,data},'latest'],id:1})
+  });
+  const j = await r.json();
+  return j.result;
+}
+
+function hex2dec(hex) {
+  return BigInt(hex) / BigInt(1e18);
+}
+
+async function loadStats() {
+  try {
+    // KarmaPool: availableBalance() = 0x4a6ecb38
+    const poolBal = await call(ARGT, '0x70a08231000000000000000000000000' + POOL.slice(2).toLowerCase());
+    const bal = hex2dec(poolBal);
+    document.getElementById('pool-balance').textContent = Number(bal).toLocaleString() + ' ARGT';
+
+    // KarmaDistributor: nextDistributionIn() = 0x...
+    // entityCount() selector: keccak256("entityCount()") = 0xed4abb28
+    const countHex = await call(DIST, '0xed4abb28');
+    const count = parseInt(countHex, 16);
+    document.getElementById('entity-count').textContent = count;
+
+    // distributionCount() selector: keccak256("distributionCount()") = 0x730cbab5
+    const distCountHex = await call(DIST, '0x730cbab5');
+    const distCount = parseInt(distCountHex, 16);
+    document.getElementById('dist-count').textContent = distCount;
+
+    // nextDistributionIn() selector
+    const nextHex = await call(DIST, '0x7cfbecc2');
+    const nextSecs = parseInt(nextHex, 16);
+    if (nextSecs === 0) {
+      document.getElementById('next-dist').textContent = 'NOW';
+    } else {
+      const days = Math.floor(nextSecs / 86400);
+      const hrs  = Math.floor((nextSecs % 86400) / 3600);
+      document.getElementById('next-dist').textContent = days + 'd ' + hrs + 'h';
+    }
+  } catch(e) {
+    ['pool-balance','next-dist','entity-count','dist-count'].forEach(id => {
+      document.getElementById(id).textContent = '—';
+    });
+  }
+}
+
+loadStats();
+</script>
+
+</body>
+</html>
