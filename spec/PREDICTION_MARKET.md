@@ -50,7 +50,7 @@ The prediction layer adds a **forward-looking mechanism**: instead of only evalu
 Most of the infrastructure already exists in ARGENTUM and Mycelium:
 
 - Karma staking: extend existing karma system
-- Outcome resolution: existing attestation + dispute (Kleros) flow
+- Outcome resolution: existing attestation flow; disputes are marked in the ARGENTUM backend (Kleros arbitration is designed, not deployed)
 - Payment rails: giskard-payments (Lightning + Arbitrum)
 - Identity: Giskard Marks
 

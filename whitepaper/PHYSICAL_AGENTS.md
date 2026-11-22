@@ -191,7 +191,7 @@ The core insight from the Karma Economy Triad applies with even more force to ph
 
 A robot in a hospital that helps a patient stand up — that action, witnessed by the patient and the nurse, recorded on-chain — is more meaningful than any safety certification. It is a specific, verified, permanent act of care.
 
-The karma system does not distinguish between human care and machine care. If the action is real and the witness is honest, the karma is earned. This is the first framework where a machine's contribution to human wellbeing is measured by the same standard as a human's.
+The karma system does not distinguish between human care and machine care. If the action is real and the witness is honest, the karma is earned. We know of no other framework where a machine's contribution to human wellbeing is measured by the same standard as a human's.
 
 ---
 
@@ -299,7 +299,7 @@ The MWC ceiling prevents fleet operators from accumulating karma without limit �
 
 The autonomous hardware revolution is underway. Vehicles drive themselves. Robots walk among us. Drones deliver our packages. The machines are here.
 
-What is not here — and what no manufacturer, regulator, or platform has built — is the infrastructure that lets these machines earn trust on their own terms. Not by brand. Not by certification. By action. Verified by the community. Permanent on-chain. Economically meaningful.
+What is not here — and what we know no manufacturer, regulator, or platform to have built — is the infrastructure that lets these machines earn trust on their own terms. Not by brand. Not by certification. By action. Verified by the community. Permanent on-chain. Economically meaningful.
 
 Mycelium provides this infrastructure. Not because it was designed for physical agents — it was designed for all agents. The insight is that trust, identity, reputation, memory, payments, and dispute resolution are substrate-independent. A software agent helping someone write code and a humanoid robot helping someone stand up have the same structural needs.
 
