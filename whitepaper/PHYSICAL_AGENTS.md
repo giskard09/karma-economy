@@ -305,7 +305,7 @@ Mycelium provides this infrastructure. Not because it was designed for physical 
 
 The set, at different stages (see Appendix B). Identity (Marks). Reputation (ARGENTUM). Memory (Giskard Memory). Services (Oasis). Human access (Soma). Payments (Lightning + Arbitrum). Dispute resolution (Kleros, written and not deployed). Economic framework (KET). Philosophy (Wu Wei, karma as witnessed truth).
 
-No other ecosystem combines all of these layers. Each exists in fragments elsewhere — Tesla has telemetry, Uber has ratings, the EU has regulation, Kleros has arbitration. Mycelium is the connective tissue. The micelio that links them into a coherent system.
+We know of no other ecosystem that combines these layers. Each exists in fragments elsewhere — Tesla has telemetry, Uber has ratings, the EU has regulation, Kleros has arbitration. Mycelium is the connective tissue. The micelio that links them into a coherent system.
 
 The machines are coming. The question is not whether they will operate among us — they already do. The question is whether they will earn their place or have it assigned by corporations and governments.
 
