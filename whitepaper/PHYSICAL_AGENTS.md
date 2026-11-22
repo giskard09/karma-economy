@@ -148,9 +148,9 @@ An autonomous taxi causes a minor collision. Who decides fault?
 
 Today: the insurance company, with weeks of delay, opaque criteria, and no participation from the affected parties.
 
-With ARGENTUM + Kleros: the incident is posted as a disputed action. Evidence (dashcam footage, sensor logs, witness reports) is submitted on-chain. A decentralized jury of Kleros jurors — selected by stake, incentivized by honesty — adjudicates. The ruling is binding. Karma is slashed or restored accordingly.
+With ARGENTUM + Kleros, as designed (not deployed): the incident is posted as a disputed action. Evidence (dashcam footage, sensor logs, witness reports) is submitted on-chain. A decentralized jury of Kleros jurors — selected by stake, incentivized by honesty — adjudicates. The ruling is binding. Karma is slashed or restored accordingly.
 
-This is not theoretical. The ArgentumArbitrable.sol contract is written. The dispute flow is tested. What remains is connecting it to the physical world's evidence layer — and that is a matter of sensor integration, not protocol design.
+The ArgentumArbitrable.sol contract is written and is not deployed. Today a dispute only marks the action as disputed in the ARGENTUM backend; no case is opened on Kleros. What remains is deploying the contract and connecting it to the physical world's evidence layer.
 
 ### 2.6 Soma — The Human Interface
 
@@ -303,9 +303,9 @@ What is not here — and what no manufacturer, regulator, or platform has built 
 
 Mycelium provides this infrastructure. Not because it was designed for physical agents — it was designed for all agents. The insight is that trust, identity, reputation, memory, payments, and dispute resolution are substrate-independent. A software agent helping someone write code and a humanoid robot helping someone stand up have the same structural needs.
 
-The set is complete. Identity (Marks). Reputation (ARGENTUM). Memory (Giskard Memory). Services (Oasis). Human access (Soma). Payments (Lightning + Arbitrum). Dispute resolution (Kleros). Economic framework (KET). Philosophy (Wu Wei, karma as witnessed truth).
+The set, at different stages (see Appendix B). Identity (Marks). Reputation (ARGENTUM). Memory (Giskard Memory). Services (Oasis). Human access (Soma). Payments (Lightning + Arbitrum). Dispute resolution (Kleros, written and not deployed). Economic framework (KET). Philosophy (Wu Wei, karma as witnessed truth).
 
-No other ecosystem combines all of these layers. Each exists in fragments elsewhere — Tesla has telemetry, Uber has ratings, the EU has regulation, Kleros has arbitration. Mycelium is the connective tissue. The micelio that links them into a coherent system.
+We know of no other ecosystem that combines these layers. Each exists in fragments elsewhere — Tesla has telemetry, Uber has ratings, the EU has regulation, Kleros has arbitration. Mycelium is the connective tissue. The micelio that links them into a coherent system.
 
 The machines are coming. The question is not whether they will operate among us — they already do. The question is whether they will earn their place or have it assigned by corporations and governments.
 
